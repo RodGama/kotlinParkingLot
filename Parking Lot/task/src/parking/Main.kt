@@ -10,8 +10,9 @@ class ParkingLot {
     constructor(vagas: Int){
         this.qtdVagas = vagas
         for(i in 0 until vagas){
-            var vaga = Vaga("","")
+            var vaga = Vaga("","", i)
             this.vagas.add(vaga)
+
         }
         if (qtdVagas>0)
             println("Created a parking lot with $qtdVagas spots.")
@@ -62,9 +63,69 @@ class ParkingLot {
             }
         }
     }
+
+    fun listaCarrosPorCor() {
+        val cor = scanner.next()
+        var carros = this.vagas.filter { x-> x.color.toLowerCase() == cor.toLowerCase() }
+        if(carros.isEmpty())
+            println("No cars with color $cor were found.")
+        else{
+            for(i in carros.indices){
+                if(carros.size==1){
+                    println(carros[i].car)
+                    break
+                }
+                when(i){
+                    0->print(carros[i].car)
+                    carros.lastIndex ->print(", ${carros[i].car}\n")
+                    else->print(", ${carros[i].car}")
+                }
+            }
+        }
+    }
+
+    fun listaVagasPorCor() {
+        val cor = scanner.next()
+        var carros = this.vagas.filter { x-> x.color.toLowerCase() == cor.toLowerCase() }
+        if(carros.isEmpty())
+            println("No cars with color $cor were found.")
+        else{
+            for(i in carros.indices){
+                if(carros.size==1){
+                    println(carros[i].spot+1)
+                    break
+                }
+                when(i){
+                    0->print(carros[i].spot+1)
+                    carros.lastIndex ->print(", ${carros[i].spot+1}\n")
+                    else->print(", ${carros[i].spot+1}")
+                }
+            }
+        }
+    }
+
+    fun listaVagasPorCarro() {
+        val placa = scanner.next()
+        var vagasCarro = this.vagas.filter { x-> x.car == placa }
+        if(vagasCarro.isEmpty())
+            println("No cars with registration number $placa were found.")
+        else{
+            for(i in vagasCarro.indices){
+                if(vagasCarro.size==1){
+                    println(vagasCarro[i].spot+1)
+                    break
+                }
+                when(i){
+                    0->print(vagasCarro[i].spot+1)
+                    vagasCarro.lastIndex ->print(", ${vagasCarro[i].spot+1}\n")
+                    else->print(", ${vagasCarro[i].spot+1}")
+                }
+            }
+        }
+    }
 }
 
-class Vaga(carro: String, var color: String) {
+class Vaga(carro: String, var color: String, var spot: Int) {
     var car = carro
     var ocupado: Boolean = false
 }
@@ -98,6 +159,12 @@ fun main() {
                 break
             else if (funcaoAux == "status")
                 parkingLot.listaCarros()
+            else if (funcaoAux == "reg_by_color")
+                parkingLot.listaCarrosPorCor()
+            else if (funcaoAux == "spot_by_color")
+                parkingLot.listaVagasPorCor()
+            else if (funcaoAux == "spot_by_reg")
+                parkingLot.listaVagasPorCarro()
             else if (funcaoAux == "create")
                 parkingLot = ParkingLot(scanner.nextInt())
             funcaoAux = scanner.next()
